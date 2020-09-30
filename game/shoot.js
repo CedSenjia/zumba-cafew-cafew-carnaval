@@ -37,6 +37,7 @@ function collisions()
     bullet_collision();
     player_collision();
     player_falling();
+    ennemi_collision();
 }
 
 function bullet_collision()
@@ -44,6 +45,7 @@ function bullet_collision()
     //collision between bullet and walls
     for (var i = 0; i < player1.bullets.length; i++)
     {
+        
         if (Math.abs(player1.bullets[i].position.x) >= WIDTH / 2 ||
             Math.abs(player1.bullets[i].position.y) >= HEIGHT / 2)
         {
@@ -51,6 +53,8 @@ function bullet_collision()
             player1.bullets.splice(i, 1);
             i--;
         }
+
+        
     }
 
 }
@@ -60,7 +64,8 @@ function player_collision()
     //collision between player and walls
     var x = player1.graphic.position.x + WIDTH / 2;
     var y = player1.graphic.position.y + HEIGHT / 2;
-
+    if (x < 0)
+        player1.graphic.position.x -= x;
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
     if ( y < 0 )
@@ -82,19 +87,34 @@ function player_falling()
 
     for (var i = 0; i < length; i++) {
         element = noGround[i];
-
+        if (element == null)
+        {
+            player1.touch();
+            
+            // if (player1.life == 0)
+            //     // player1.dead();
+            break;
+        }
         var tileX = (element[0]) | 0;
         var tileY = (element[1]) | 0;
         var mtileX = (element[0] + sizeOfTileX) | 0;
         var mtileY = (element[1] + sizeOfTileY) | 0;
 
-        if ((x > tileX)
-            && (x < mtileX)
-            && (y > tileY) 
-            && (y < mtileY))
+        if (((x > tileX-20)
+            && (x < mtileX-20))
+            && ((y > tileY-20) 
+            && (y < mtileY-20)))
         {
-           player1.dead();
+            player1.touch();
+            // if (player1.life == 0)
+            //     player1.dead();
         }
     }
 
+}
+
+function ennemi_collision()
+{
+    if ((player2.position.x > player1.position.x+22 && player2.position.x < player1.position.x+27)&& (player2.position.y > player1.position.y+22 && player2.position.y < player1.position.y+27))
+        player1.touch();
 }

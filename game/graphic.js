@@ -25,8 +25,11 @@ function init()
     noGround = [];
     ground = new Ground(0xffffff, WIDTH, HEIGHT, 10);
     
-    player1 = new Player("player1", 0xffff00, new THREE.Vector2(50, 0), 0);
+    player1 = new Player("player1", 0xffff00, new THREE.Vector2(50,0), 0);
     scene.add(player1.graphic);
+
+    player2 = new Ennemie("player2", 0xff0000, new THREE.Vector3(25,25,6),0);
+    scene.add(player2.graphic);
 
     light1 = new Light("sun", 0xffffff, "0,0,340");
     scene.add(light1);
@@ -48,9 +51,11 @@ function Ground(color, size_x, size_y, nb_tile)
         for (y = minY; y <= maxY; y = y+sizeOfTileY){
 
             color = colors[Math.floor(Math.random()*colors.length)];
-       
-            if (0x000000 != color)
+            if (0x000000 != color || (x == 60 && y == 0))
             {
+                // J'ai mis la case en blanc pour montrer qu'on change bien la case de départ. Elle est blanc que s'il ne devait pas y avoir de case de base
+                if (color == 0x000000)
+                    color = 0xffffff;
                 tmpGround = new THREE.Mesh(
                 new THREE.PlaneGeometry(sizeOfTileX-10, sizeOfTileY-10),
                 new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.6}));
@@ -59,14 +64,16 @@ function Ground(color, size_x, size_y, nb_tile)
                 scene.add(tmpGround);
             }
             else
+            {
                 noGround.push([x, y]);
+            }
         }
     }
 }
 
 function Light(name, color, position)
 {
-    pointLight = new THREE.PointLight(color, 50, 350);
+    pointLight = new THREE.PointLight(color, 50, 650);
 
     pointLight.position.x = position.split(',')[0];
     pointLight.position.y = position.split(',')[1];
