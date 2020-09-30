@@ -91,8 +91,8 @@ function player_falling()
         {
             player1.touch();
             
-            // if (player1.life == 0)
-            //     // player1.dead();
+            if (player1.life == 0)
+            player1.dead();
             break;
         }
         var tileX = (element[0]) | 0;
@@ -106,8 +106,8 @@ function player_falling()
             && (y < mtileY-20)))
         {
             player1.touch();
-            // if (player1.life == 0)
-            //     player1.dead();
+            if (player1.life == 0)
+                 player1.dead();
         }
     }
 
